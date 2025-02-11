@@ -1,7 +1,21 @@
-import PropTypes from "prop-types";
+import React from "react";
 import s from "./ImageCard.module.css";
 
-const ImageCard = ({ image, onImageClick }) => {
+// Определяем интерфейсы TypeScript для пропсов
+interface Image {
+  id: string;
+  urls: {
+    small: string;
+  };
+  alt_description?: string;
+}
+
+interface ImageCardProps {
+  image: Image;
+  onImageClick?: (image: Image) => void;
+}
+
+const ImageCard: React.FC<ImageCardProps> = ({ image, onImageClick }) => {
   const handleClick = () => {
     if (onImageClick) {
       onImageClick(image);
@@ -18,16 +32,6 @@ const ImageCard = ({ image, onImageClick }) => {
       />
     </div>
   );
-};
-
-ImageCard.propTypes = {
-  image: PropTypes.shape({
-    urls: PropTypes.shape({
-      small: PropTypes.string.isRequired,
-    }).isRequired,
-    alt_description: PropTypes.string,
-  }).isRequired,
-  onImageClick: PropTypes.func,
 };
 
 export default ImageCard;
