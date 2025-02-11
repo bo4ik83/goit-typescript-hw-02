@@ -1,0 +1,17 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: wheat;
+}
+
+.form {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.button {
+  margin-left: 20px;
+  background-color: yellowgreen;
+}
