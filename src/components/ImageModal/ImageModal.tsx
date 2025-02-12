@@ -1,46 +1,57 @@
-import React from "react";
+import { useEffect } from "react";
 import Modal from "react-modal";
+Modal.setAppElement("#root");
 import s from "./ImageModal.module.css";
 
-// Тип для изображения
-interface Image {
-  urls: {
-    regular: string;
-  };
-  alt_description?: string;
-}
-
-// Типы пропсов компонента ImageModal
 interface ImageModalProps {
   isOpen: boolean;
   onClose: () => void;
-  image: Image | null;
+  imageUrl: string;
+  imageAlt: string;
 }
 
-Modal.setAppElement("#root");
+const ImageModal: React.FC<ImageModalProps> = ({
+  isOpen,
+  onClose,
+  imageUrl,
+  imageAlt,
+}) => {
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
 
-const ImageModal: React.FC<ImageModalProps> = ({ isOpen, onClose, image }) => {
-  if (!image) return null;
+    document.addEventListener("keydown", handleEsc);
+
+    return () => {
+      document.removeEventListener("keydown", handleEsc);
+    };
+  }, [onClose]);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+
+    return () => {
+      document.body.classList.remove("no-scroll");
+    };
+  }, [isOpen]);
 
   return (
     <Modal
       isOpen={isOpen}
       onRequestClose={onClose}
+      shouldCloseOnOverlayClick={true}
       className={s.modal}
       overlayClassName={s.overlay}
     >
       <div className={s.content}>
-        <img
-          src={image.urls.regular}
-          alt={image.alt_description || "Image preview"}
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.src = "fallback-image-url.jpg";
-          }}
-        />
-        <button onClick={onClose} className={s.closeButton}>
-          X
-        </button>
+        <img src={imageUrl} alt={imageAlt} />
       </div>
     </Modal>
   );

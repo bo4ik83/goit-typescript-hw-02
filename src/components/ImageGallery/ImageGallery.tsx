@@ -1,31 +1,41 @@
-import React from "react";
 import ImageCard from "../ImageCard/ImageCard";
 import s from "./ImageGallery.module.css";
 
-// Определяем тип для изображения
-interface Image {
-  id: string;
-  urls: { small: string; regular: string };
-  alt_description?: string;
+interface ImageUrls {
+  small: string;
+  full: string;
 }
 
-// Тип пропсов компонента ImageGallery
+interface Image {
+  id: string;
+  urls: ImageUrls;
+  alt_description: string | null;
+}
+
 interface ImageGalleryProps {
   images: Image[];
-  onImageClick: (image: Image) => void;
+  onImageClick: (imageUrl: string, imageAlt: string) => void;
 }
 
 const ImageGallery: React.FC<ImageGalleryProps> = ({
   images,
   onImageClick,
-}) => (
-  <ul className={s.gallery}>
-    {images.map((image) => (
-      <li key={image.id} onClick={() => onImageClick(image)}>
-        <ImageCard image={image} />
-      </li>
-    ))}
-  </ul>
-);
+}) => {
+  if (!images.length) return null;
+
+  return (
+    <ul className={s.gallery}>
+      {images.map(({ id, urls, alt_description }) => (
+        <li key={id}>
+          <ImageCard
+            src={urls.small}
+            alt={alt_description || "Image"}
+            onClick={() => onImageClick(urls.full, alt_description || "Image")}
+          />
+        </li>
+      ))}
+    </ul>
+  );
+};
 
 export default ImageGallery;

@@ -1,35 +1,15 @@
-import React from "react";
 import s from "./ImageCard.module.css";
 
-// Определяем интерфейсы TypeScript для пропсов
-interface Image {
-  id: string;
-  urls: {
-    small: string;
-  };
-  alt_description?: string;
-}
-
 interface ImageCardProps {
-  image: Image;
-  onImageClick?: (image: Image) => void;
+  src: string;
+  alt: string;
+  onClick: () => void;
 }
 
-const ImageCard: React.FC<ImageCardProps> = ({ image, onImageClick }) => {
-  const handleClick = () => {
-    if (onImageClick) {
-      onImageClick(image);
-    }
-  };
-
+const ImageCard: React.FC<ImageCardProps> = ({ src, alt, onClick }) => {
   return (
-    <div className={s.card}>
-      <img
-        src={image.urls.small}
-        alt={image.alt_description || "Image"}
-        className={s.image}
-        onClick={handleClick}
-      />
+    <div className={s.card} onClick={onClick}>
+      <img className={s.image} src={src} alt={alt} />
     </div>
   );
 };
