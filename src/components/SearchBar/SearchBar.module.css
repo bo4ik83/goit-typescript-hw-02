@@ -11,6 +11,14 @@
   margin-right: auto;
 }
 
+.input {
+  width: 300px;
+  height: 40px;
+  font-size: 18px;
+  padding: 10px;
+  border-radius: 3px;
+}
+
 .button {
   margin-left: 20px;
   background-color: yellowgreen;
